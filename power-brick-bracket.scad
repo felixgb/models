@@ -16,16 +16,18 @@ module power_brick_bracket(size) {
   }
 
   module intersecting_blocks() {
-    translate([-wall_thickness, size_with_walls.y / 4, -wall_thickness]) {
+    y_size_ratio = 6;
+    y_begin = (size_with_walls.y - (size_with_walls.y / y_size_ratio) * 2) / size_with_walls.y;
+    translate([-wall_thickness, size_with_walls.y / y_size_ratio, -wall_thickness]) {
       cube(
         [
           size_with_walls.x + (wall_thickness * 4),
-          size_with_walls.y / 2,
+          size_with_walls.y * y_begin,
           size_with_walls.z + (wall_thickness * 4)
         ]
       );
     }
-    x_size_ratio = 16;
+    x_size_ratio = 28;
     x_begin = (size_with_walls.x - (size_with_walls.x / x_size_ratio) * 2) / size_with_walls.x;
     translate([size_with_walls.x / x_size_ratio, -wall_thickness, wall_thickness]) {
       cube(
