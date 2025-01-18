@@ -38,15 +38,15 @@ module inset_hexigon() {
 }
 
 module hexagon_grid() {
-  for (y = [0 : 20]) {
+  for (y = [0 : 6]) {
     if (y % 2 == 0) {
-      for (x = [0 : 40]) {
+      for (x = [0 : 10]) {
         translate([x * width, (y * three_quarter_height), 0]) {
           inset_hexigon();
         }
       }
     } else {
-      for (x = [0 : 39]) {
+      for (x = [0 : 9]) {
         translate([x * width + half_width, (y * three_quarter_height), 0]) {
           inset_hexigon();
         }
@@ -55,7 +55,7 @@ module hexagon_grid() {
   }
 }
 
-border_thickness = 5;
+border_thickness = 1;
 
 // module border() {
 //   difference() {
@@ -82,15 +82,15 @@ module border() {
   difference() {
     square(
       [
-        41 * width + border_thickness * 2,
-        21 * three_quarter_height + 1 + border_thickness * 2
+        11 * width + border_thickness * 2,
+        7 * three_quarter_height + 1 + border_thickness * 2
       ]
     );
     translate([border_thickness, border_thickness, 0]) {
       square(
         [
-          41 * width,
-          21 * three_quarter_height + 1
+          11 * width,
+          7 * three_quarter_height + 1
         ]
       );
     }
@@ -105,9 +105,9 @@ module hex_grid_with_border() {
 }
 
 module wall() {
-  translate([0, 5, 0]) {
+  translate([0, 1, 0]) {
     rotate([90, 0, 0]) {
-      linear_extrude(5) {
+      linear_extrude(1) {
         hex_grid_with_border();
       }
     }
@@ -117,27 +117,29 @@ module wall() {
 module base() {
   cube(
     [
-      41 * width + border_thickness * 2,
-      41 * width + border_thickness * 2,
+      11 * width + border_thickness * 2,
+      11 * width + border_thickness * 2,
       //41 * three_quarter_height + 1 + border_thickness * 2,
-      5
+      1
     ]
   );
 }
 
-wall();
-translate([0, 41 * width + border_thickness, 0]) {
+scale([3, 3, 3]) {
   wall();
-}
-translate([5, 0, 0]) {
-  rotate([0, 0, 90]) {
+  translate([0, 11 * width + border_thickness, 0]) {
     wall();
   }
-}
-translate([41 * width + border_thickness + border_thickness, 0, 0]) {
-  rotate([0, 0, 90]) {
-    wall();
+  translate([1, 0, 0]) {
+    rotate([0, 0, 90]) {
+      wall();
+    }
   }
+  translate([11 * width + border_thickness + border_thickness, 0, 0]) {
+    rotate([0, 0, 90]) {
+      wall();
+    }
+  }
+  base();
 }
-base();
 
