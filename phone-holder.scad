@@ -1,17 +1,39 @@
-$fn = 20;
-difference() {
+use <truss_beam.scad>
+
+module phone_holder(width, height, depth) {
+
+  module holding_bit(phone_thickness) {
     difference() {
-      minkowski() {
-        cube([5, 10, 2], center = true);
-        sphere(1);
+      cube([height, width, height]);
+      translate([0 - 0.1, height, 0 - 0.1]) {
+        cube([height + 0.2, width - (height * 2), height + 0.2]);
       }
-      translate([0, 0, -2]) {
-        cube([10, 12, 2], center = true);
+      translate([height / 2 - phone_thickness / 2, 0 - 0.1, height / 3]) {
+        rotate([0, 20, 0]) {
+          cube([phone_thickness, 100, 100]);
+        }
+      }
+      translate([-phone_thickness, 0 - 0.1, 0]) {
+        rotate([0, 20, 0]) {
+          cube([phone_thickness, 100, 100]);
+        }
       }
     }
-    translate([-1, 3, 1]) {
-        rotate([20, 0, 0]) {
-            cube([10, 1.5, 3], center = true);
-        };
-    };
+  }
+
+  holding_bit(8);
+  //truss_beam(60, 20, 2, 6);
+  translate([height * 2, height, 0,]) {
+    rotate([0, 0, 90]) {
+      truss_beam(width - height * 2, height, 2, 2);
+    }
+  }
+  translate([height, 0, 0]) {
+    truss_beam(depth, height, 2, 6);
+  }
+  translate([height, width - height, 0]) {
+    truss_beam(depth, height, 2, 6);
+  }
 }
+
+phone_holder(70, 20, 80);
