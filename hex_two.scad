@@ -38,15 +38,15 @@ module inset_hexigon() {
 }
 
 module hexagon_grid() {
-  for (y = [0 : 10]) {
+  for (y = [0 : 20]) {
     if (y % 2 == 0) {
-      for (x = [0 : 10]) {
+      for (x = [0 : 40]) {
         translate([x * width, (y * three_quarter_height), 0]) {
           inset_hexigon();
         }
       }
     } else {
-      for (x = [0 : 9]) {
+      for (x = [0 : 39]) {
         translate([x * width + half_width, (y * three_quarter_height), 0]) {
           inset_hexigon();
         }
@@ -55,7 +55,7 @@ module hexagon_grid() {
   }
 }
 
-border_thickness = 1;
+border_thickness = 5;
 
 // module border() {
 //   difference() {
@@ -82,37 +82,62 @@ module border() {
   difference() {
     square(
       [
-        11 * width + border_thickness * 2,
-        11 * three_quarter_height + 1 + border_thickness * 2
+        41 * width + border_thickness * 2,
+        21 * three_quarter_height + 1 + border_thickness * 2
       ]
     );
     translate([border_thickness, border_thickness, 0]) {
       square(
         [
-          11 * width,
-          11 * three_quarter_height + 1
+          41 * width,
+          21 * three_quarter_height + 1
         ]
       );
     }
   }
 }
 
-// module border() {
-//   translate([border_thickness, border_thickness * 0.75, 0]) {
-//     square(
-//       [
-//         11 * width - border_thickness * 2,
-//         11 * three_quarter_height
-//       ]
-//     );
-//   }
-// }
-
-// resize([20, 20]) {
-// translate([border_thickness / 2, border_thickness / 2, 0]) {
+module hex_grid_with_border() {
   border();
-// }
-translate([border_thickness, border_thickness, 0]) {
-  hexagon_grid();
+  translate([border_thickness, border_thickness, 0]) {
+    hexagon_grid();
+  }
 }
-// }
+
+module wall() {
+  translate([0, 5, 0]) {
+    rotate([90, 0, 0]) {
+      linear_extrude(5) {
+        hex_grid_with_border();
+      }
+    }
+  }
+}
+
+module base() {
+  cube(
+    [
+      41 * width + border_thickness * 2,
+      41 * width + border_thickness * 2,
+      //41 * three_quarter_height + 1 + border_thickness * 2,
+      5
+    ]
+  );
+}
+
+wall();
+translate([0, 41 * width + border_thickness, 0]) {
+  wall();
+}
+translate([5, 0, 0]) {
+  rotate([0, 0, 90]) {
+    wall();
+  }
+}
+translate([41 * width + border_thickness + border_thickness, 0, 0]) {
+  rotate([0, 0, 90]) {
+    wall();
+  }
+}
+base();
+
