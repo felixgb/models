@@ -52,7 +52,7 @@ module truss_3d(width, height, sep_width, num_triangles) {
   }
 }
 
-num_triangles = 10;
+num_triangles = 6;
 
 module tri_overrun(width, height, sep) {
   truss_3d(width, height, sep, num_triangles);
@@ -112,7 +112,7 @@ module male_end(height, sep) {
   cube([thickness, height, height]);
   translate([thickness * 3, height / 2, sep]) {
     difference() {
-      scale([4, 0.8, 0.8]) {
+      scale([4, 0.9, 0.9]) {
         key(height, sep);
       }
       translate([-thickness, 0, thickness / 2]) {
@@ -132,19 +132,30 @@ module key(height, sep) {
 
 module go() {
   difference() {
-    tri_overrun(100, 15, 3);
-    clipping_cubes(100, 15, 1.5);
+    tri_overrun(50, 15, 3);
+    clipping_cubes(50, 15, 1.5);
   }
 }
 
-go();
-
-translate([0, 20, 0]) {
+translate([0, 0, -0.5]) {
   go();
 }
 
+// translate([0, 20, -0.5]) {
+//   go();
+// }
+
+module pin(height, thickness) {
+    hull() {
+      cube([thickness + 0.5, thickness, thickness]);
+      translate([0, 0, height]) {
+        cube([thickness - 0.5, thickness, thickness]);
+      }
+    }
+}
+
 translate([0, 40, 0]) {
-  cube([1.5, 15, 1.5]);
+  pin(15, 1.4);
 }
 
 // import("tri-beam.stl");
