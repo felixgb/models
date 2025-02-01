@@ -42,7 +42,6 @@ module bar_link() {
     );
 }
 
-
 module bar_segment_surrounds() {
   linear_extrude(bar_segment_surround_width)
     elipse_thing_profile(segment_length, segment_height);
@@ -53,7 +52,7 @@ module bar_segment_surrounds() {
 }
 
 module bar_segment() {
-  #bar_link();
+  bar_link();
   difference() {
     bar_segment_surrounds();
     bar_hole();
