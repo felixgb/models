@@ -13,7 +13,7 @@ module slotted_open_front(width, depth, height) {
   module top_female_slot() {
     n_slots = width / slot_width_basis;
     for (i = [0 : n_slots - 1]) {
-      translate([(i * slot_width_basis) + slot_depth * 2, depth, height])
+      translate([(i * slot_width_basis) + slot_depth * 2, depth + corner_radius, height])
         rotate(90, [1, 0, 0])
           linear_extrude(depth)
             trapazoid(
@@ -27,7 +27,7 @@ module slotted_open_front(width, depth, height) {
   module left_female_slot() {
     n_slots = height / slot_width_basis;
     for (i = [0 : n_slots - 1]) {
-      translate([slot_depth / 2, depth, (i * slot_width_basis) + slot_depth * 2.5])
+      translate([slot_depth / 2, depth + corner_radius, (i * slot_width_basis) + slot_depth * 2.5])
         rotate(270, [0, 1, 0])
           rotate(90, [1, 0, 0])
             linear_extrude(depth)
@@ -45,7 +45,7 @@ module slotted_open_front(width, depth, height) {
       translate([width + slot_depth / 2 - 0.5, depth, (i * slot_width_basis) + slot_depth * 2.5 + 0.5])
         rotate(270, [0, 1, 0])
           rotate(90, [1, 0, 0])
-            linear_extrude(depth)
+            linear_extrude(depth - corner_radius)
               trapazoid(
                 slot_width_basis - slot_depth * 5 - 1,
                 slot_width_basis - slot_depth * 4 - 1,
@@ -59,7 +59,7 @@ module slotted_open_front(width, depth, height) {
     for (i = [0 : n_slots - 1]) {
       translate([(i * slot_width_basis) + slot_depth * 2 + 0.5, depth, 0.5])
         rotate(90, [1, 0, 0])
-          linear_extrude(depth)
+          linear_extrude(depth - corner_radius)
             trapazoid(
               slot_width_basis - slot_depth * 5 - 1,
               slot_width_basis - slot_depth * 4 - 1,
@@ -99,7 +99,7 @@ module slotted_open_front(width, depth, height) {
       );
   }
 
-  right_male_slot();
+  #right_male_slot();
   bottom_male_slot();
   difference() {
     outer_box();
@@ -109,7 +109,7 @@ module slotted_open_front(width, depth, height) {
   }
 }
 
-slotted_open_front(60, 120, 30);
+slotted_open_front(60, 150, 30);
 // slotted_open_front(60, 30, 30);
 // translate([0, 0, 35])
 //   slotted_open_front(30, 30, 30);
