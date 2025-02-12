@@ -1,6 +1,7 @@
 $fn = 100;
 
 use <fun-shapes.scad>;
+use <truss-beam.scad>;
 
 slot_depth = 5;
 corner_radius = 2;
@@ -99,7 +100,7 @@ module slotted_open_front(width, depth, height) {
       );
   }
 
-  #right_male_slot();
+  right_male_slot();
   bottom_male_slot();
   difference() {
     outer_box();
@@ -109,9 +110,44 @@ module slotted_open_front(width, depth, height) {
   }
 }
 
-slotted_open_front(60, 150, 30);
-// slotted_open_front(60, 30, 30);
-// translate([0, 0, 35])
-//   slotted_open_front(30, 30, 30);
-// translate([0, 0, 150])
-//   slotted_open_front(60, 60, 60);
+angled_stand_depth = 120;
+angled_stand_width = 30;
+
+module angled_stand() {
+  module top_rail() {
+    n_slots = angled_stand_width / slot_width_basis;
+    for (i = [0 : n_slots - 1]) {
+      translate([(i * slot_width_basis) + slot_depth * 2 + 0.5, corner_radius, 30 + slot_depth / 2 - 0.5])
+        rotate(270, [1, 0, 0])
+          linear_extrude(angled_stand_depth - corner_radius)
+            trapazoid(
+              slot_width_basis - slot_depth * 5 - 1,
+              slot_width_basis - slot_depth * 4 - 1,
+              slot_depth / 2 - 0.5
+            );
+    }
+  }
+
+  difference() {
+    rotate(-12, [1, 0, 0]) {
+      translate([0, 0, 30 - slot_depth / 2])
+        cube([angled_stand_width, angled_stand_depth, slot_depth / 2]);
+      top_rail();
+      translate([10, 0, 0])
+        rotate(270, [0, 1, 0])
+          truss_beam(30 - slot_depth / 2, 10, 2, 4);
+      cube([10, 10, slot_depth]);
+      translate([angled_stand_width, 0, 0])
+        rotate(270, [0, 1, 0])
+          truss_beam(30 - slot_depth / 2, 10, 2, 4);
+      translate([angled_stand_width - 10, 0, 0])
+        cube([10, 10, slot_depth]);
+    }
+    mirror([0, 0, 1])
+      cube([angled_stand_width, angled_stand_depth + 20, 30]);
+  }
+
+}
+
+// angled_stand();
+slotted_open_front(90, 90, 90);
