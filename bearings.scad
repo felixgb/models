@@ -1,8 +1,10 @@
 $fn = 100;
 
-bearing_radius = 12.5;
-bearing_radius_allowance = 0.3;
-num_bearings = 6;
+// height is 2 * bearing_radius
+bearing_radius = 5;
+bearing_radius_allowance = 0.8;
+num_bearings = 25;
+wall_thickness = 1;
 
 function calculate_run_radius(num_bearings, bearing_radius) =
   bearing_radius / sin(180 / num_bearings);
@@ -10,19 +12,19 @@ function calculate_run_radius(num_bearings, bearing_radius) =
 r = calculate_run_radius(num_bearings, bearing_radius);
 
 module frame() {
-  translate([20, 10, 0]) {
+  translate([bearing_radius * 2, bearing_radius, 0]) {
     difference() {
-      square([30, bearing_radius * 2], center=true);
-      square([15, bearing_radius * 2], center=true);
+      square([bearing_radius * 2 + wall_thickness * 2, bearing_radius * 2], center=true);
+      square([bearing_radius, bearing_radius * 2], center=true);
     }
   }
 }
 
 module run_outline() {
-  translate([0, 2.5, 0]) {
+  translate([0, 0, 0]) {
     difference() {
       frame();
-      translate([20, 10, 0]) {
+      translate([bearing_radius * 2, bearing_radius, 0]) {
         circle(bearing_radius);
       }
     }
@@ -31,19 +33,19 @@ module run_outline() {
 
 module run() {
   rotate_extrude(angle=360) {
-    translate([r - 20, 0, 0]) {
+    translate([r - (bearing_radius * 2), 0, 0]) {
       run_outline();
     }
   }
 }
-run_outline();
-// run();
+// run_outline();
+run();
 
-// angle = 360 / num_bearings;
-// for (i = [angle : angle : 360]) {
-//   x = r * cos(i);
-//   y = r * sin(i);
-//   translate([x, y, bearing_radius]) {
-//     #sphere(bearing_radius - bearing_radius_allowance);
-//   }
-// }
+angle = 360 / num_bearings;
+for (i = [angle : angle : 360]) {
+  x = r * cos(i);
+  y = r * sin(i);
+  translate([x, y, bearing_radius]) {
+    #sphere(bearing_radius - bearing_radius_allowance);
+  }
+}
