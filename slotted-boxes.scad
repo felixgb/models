@@ -150,4 +150,4 @@ module angled_stand() {
 }
 
 // angled_stand();
-slotted_open_front(90, 90, 90);
+slotted_open_front(30, 120, 90);
