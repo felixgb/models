@@ -1,4 +1,4 @@
-use <truss_beam.scad>
+use <truss-beam.scad>
 
 module phone_holder(width, height, depth) {
 
@@ -36,4 +36,4 @@ module phone_holder(width, height, depth) {
   }
 }
 
-phone_holder(70, 20, 80);
+phone_holder(60, 20, 40);

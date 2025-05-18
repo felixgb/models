@@ -2,10 +2,10 @@ $fn = 200;
 
 wall_t = 1;
 
-width = 30;
-depth = 20;
-height = 20;
-curve = 6;
+width = 60;
+depth = 40;
+height = 40;
+curve = 12;
 handle_width = depth - (curve * 2);
 
 module smoothed_cube(w, d, h, r)
@@ -35,11 +35,11 @@ module handle_curve()
 module handle() {
   hull() {
     cube([handle_width, handle_width, curve]);
-    translate([width * 2, handle_width / 2, curve / 2])
+    translate([width * 1.5, handle_width / 2, curve / 2])
       rotate(90, [0, 1, 0])
         cylinder(handle_width, r=curve / 2);
   }
-  translate([width * 2 + handle_width, (handle_width / 2) + curve, curve / 2])
+  translate([width * 1.5 + handle_width, (handle_width / 2) + curve, curve / 2])
     rotate(90, [0, 0, -1])
       hook();
 }
