@@ -1,6 +1,6 @@
 $fn = 100;
 shaft_inner_diameter = 11;
-shaft_flange_depth = 4.5;
+shaft_flange_depth = 4;
 shaft_depth = 30;
 
 knob_outer_diameter = 45;
@@ -16,15 +16,15 @@ module outer()
     cylinder(r = shaft_outer_diameter / 2, h = shaft_depth);
   }
 
-module inner_shaft_profile()
+module inner_shaft_profile(diameter, flage_depth)
   rotate(45, [0, 0, 1]) {
-    circle(shaft_flange_depth);
+    circle(flage_depth);
     square(
-      [shaft_inner_diameter, shaft_flange_depth],
+      [diameter, flage_depth],
       center = true
     );
     square(
-      [shaft_flange_depth, shaft_inner_diameter],
+      [flage_depth, diameter],
       center = true
     );
   }
@@ -33,7 +33,7 @@ module outer_with_shaft() {
   difference() {
     outer();
     linear_extrude(shaft_depth)
-      inner_shaft_profile();
+      inner_shaft_profile(shaft_inner_diameter, shaft_flange_depth);
   }
 }
 
@@ -51,7 +51,7 @@ module glyphs() {
     );
   translate([0, -text_size * 1.5, 0])
     text(
-      "456R",
+      "246R",
       spacing = 1.5,
       font = "DejaVu Sans Mono",
       size = text_size,
@@ -69,19 +69,13 @@ module glyphs() {
     );
 }
 
-module glyphs_3d() {
-  // linear_extrude(1)
-  //   difference() {
-  //     circle(shaft_outer_diameter / 2 - 1);
-  //     inner_shaft_profile();
-  //   }
+module glyphs_3d()
   intersection() {
     translate([0, 0, shaft_depth + (knob_outer_diameter / 2) - 10])
       linear_extrude(40)
         glyphs();
     top_knob();
   }
-}
 
 module finalize()
   color("blue")
@@ -92,9 +86,3 @@ module finalize()
 
 color("white") glyphs_3d();
 finalize();
-
-//finalize();
-// outer_with_shaft();
-// translate([0, 0, shaft_depth + (knob_outer_diameter / 2)])
-//   #glyphs();
-
