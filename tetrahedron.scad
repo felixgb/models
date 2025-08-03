@@ -84,6 +84,7 @@ module inside(edge_length, inner_edge_length) {
 }
 // inside(50, 35);
 
+tetrahedron(10);
 
 module spaced() {
   for (i = [0 : 0]) {
@@ -99,12 +100,12 @@ module spaced() {
   }
 }
 
-spaced() {
-
-  translate([0, 0, thickness]) {
-    mirror([0, 0, 1]) {
-      inner_shape(49.0, 34.0);
-    }
-  }
-}
-
+// spaced() {
+// 
+//   translate([0, 0, thickness]) {
+//     mirror([0, 0, 1]) {
+//       inner_shape(49.0, 34.0);
+//     }
+//   }
+// }
+// 
