@@ -87,7 +87,7 @@ function catmull_rom_spline(ps, alpha = 1, steps = 10) =
 
 module tube(p1, p2) {
   module profile(s)
-    cube([s, s, 0.1], center=true);
+    cube([s, s, 0.001], center=true);
 
   module shape(s)
     hull() {
@@ -108,6 +108,6 @@ module catmull_rom(ps, diameter = 1) {
   }
 }
 
-tube([0, 0, 0], [50, 0, 50]);
+// tube([0, 0, 0], [50, 0, 50]);
 // color("blue") simple();
 color("red") catmull_rom(points3d, 2);
