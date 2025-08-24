@@ -1,28 +1,46 @@
-points = [
-  [10, 0],
-  [20, 10],
-  [40, 20],
-  [10, 30],
-];
-
-points2 = [
-  [20, 0],
-  [20, 10],
-  [40, 30],
-  [40, 40],
-  [20, 40],
-  [20, 60],
-  [20, 80],
-];
-
 points3d = [
+  [0, 0, -10],
   [0, 0, 0],
-  [10, 50, 50],
-  [20, 0, 100],
-  [-50, -50, 150],
-  [-30, 0, 200],
-  [0, 100, 250],
+  [140, -40, 180],
+  [140, -40, 200],
 ];
+
+
+downpipe_size = 70;
+gutter_size = 50;
+
+module downpipe_connector() {
+  bottom = points3d[len(points3d) - 2];
+  translate(bottom) {
+    translate([0, 0, 20]) {
+      difference() {
+        linear_extrude(20)
+          difference() {
+            square([downpipe_size + 2, downpipe_size + 2], center = true);
+            square([downpipe_size, downpipe_size], center = true);
+          }
+          translate([0, -(downpipe_size / 2) - 2, 10])
+            rotate(90, [0, 0, 1])
+              rotate(90, [0, 1, 0])
+                cylinder(r = 1.5, h = 4);
+        }
+      }
+    difference() {
+      hull() {
+        translate([0, 0, 20])
+          cube([downpipe_size + 2, downpipe_size + 2, 0.01], center = true);
+        cube([gutter_size + 2, gutter_size + 2, 0.01], center = true);
+      }
+      hull() {
+        translate([0, 0, 20])
+          cube([downpipe_size, downpipe_size, 0.01], center = true);
+        cube([gutter_size, gutter_size, 0.01], center = true);
+      }
+    }
+  }
+}
+
+downpipe_connector();
 
 function sliding_2(xs) =
   [for (i = [0 : len(xs) - 2]) [xs[i], xs[i + 1]]];
@@ -52,19 +70,6 @@ function catmull_rom_segment(P0, P1, P2, P3, t0, t1, t2, t3, steps) = [
       C = lerp_knot(B1, B2, t1, t2, t)
     ) C
 ];
-
-module line_segment_2d(p1, p2) {
-  hull() {
-    translate(p1) circle(d = 1);
-    translate(p2) circle(d = 1);
-  }
-}
-
-module simple() {
-  for (window = sliding_2(points2)) {
-    line_segment_2d(window[0], window[1]);
-  }
-}
 
 function catmull_rom_spline(ps, alpha = 1, steps = 10) =
   let(
@@ -96,8 +101,8 @@ module tube(p1, p2) {
     }
 
   difference() {
-    shape(65 + 2);
-    shape(65);
+    shape(gutter_size + 2);
+    shape(gutter_size);
   }
 }
 
