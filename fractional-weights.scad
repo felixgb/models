@@ -10,8 +10,10 @@ bottom_height = (height / 4) * 3;
 
 outer_diameter = (hole_radius * 2) + (width * 2) - (wall_thickness * 4);
 inner_diameter = (hole_radius * 2);
+
 volume = PI * (bottom_height - wall_thickness) * (pow(outer_diameter / 2, 2) - pow(inner_diameter / 2, 2));
 volume_in_ml = volume / 1000;
+
 echo(volume_in_ml);
 echo(volume_in_ml * 2);
 

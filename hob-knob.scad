@@ -18,15 +18,33 @@ module shaft() {
   }
 }
 
+// module centered_shaft() {
+//   #translate([depth, - radius, radius]) {
+//     rotate(90, [0, 0, 1]) {
+//       rotate(270, [1, 0, 0]) {
+//         shaft();
+//       }
+//     }
+//   }
+// }
+
 module centered_shaft() {
-  #translate([depth, - radius, radius]) {
+  translate([0, -0, 0]) {
     rotate(90, [0, 0, 1]) {
       rotate(270, [1, 0, 0]) {
-        shaft();
+        cylinder(10, r = 9.75);
+        for (i = [0:90:360])
+          rotate(i, [0, 0, 1])
+            translate([9.50, 0, 0.5])
+              minkowski() {
+                cylinder(9, r = 0.3);
+                sphere(0.3);
+            }
       }
     }
   }
 }
+
 
 module dodecahedron(size) {
     phi = (1 + sqrt(5)) / 2;
@@ -86,11 +104,13 @@ module dodecahedron(size) {
     }
 }
 
-difference() {
-  dodecahedron(30);
-  translate([-15, 0, 0]) {
-    centered_shaft();
-  }
+translate([0, 0, 20]) {
+  rotate(90, [0, 1, 0]) {
+    dodecahedron(40);
+      translate([-20, 0, 0]) {
+        centered_shaft();
+      }
+    }
 }
 
 
